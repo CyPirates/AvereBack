@@ -1,7 +1,7 @@
-package CyPirates.avere.global;
+package CyPirates.avere.global.jwt;
 
-import CyPirates.avere.user.User;
-import CyPirates.avere.user.UserRepository;
+import CyPirates.avere.domain.user.entity.User;
+import CyPirates.avere.domain.user.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

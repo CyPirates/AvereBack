@@ -1,4 +1,4 @@
-package CyPirates.avere.user;
+package CyPirates.avere.domain.user.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

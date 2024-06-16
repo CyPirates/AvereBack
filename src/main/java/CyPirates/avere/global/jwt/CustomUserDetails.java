@@ -1,6 +1,6 @@
-package CyPirates.avere.global;
+package CyPirates.avere.global.jwt;
 
-import CyPirates.avere.user.User;
+import CyPirates.avere.domain.user.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

@@ -1,5 +1,6 @@
-package CyPirates.avere.user;
+package CyPirates.avere.domain.user.repository;
 
+import CyPirates.avere.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
