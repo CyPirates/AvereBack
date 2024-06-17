@@ -84,14 +84,14 @@ jobs:
         script: |
           sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
           sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:test
-          sudo docker tag ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:test scheduler
+          sudo docker tag ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:test avere
 
-          server="scheduler-server"
+          server="avere-server"
           if [ "$(sudo docker ps -f name=$server)" ]
             then
               sudo docker stop $server
               sudo docker rm $server
           fi
             
-            sudo docker run -d --name $server -p ${{ secrets.SERVER_PORT }}:${{ secrets.SERVER_PORT }} scheduler
+            sudo docker run -d --name $server -p ${{ secrets.SERVER_PORT }}:${{ secrets.SERVER_PORT }} avere
 
