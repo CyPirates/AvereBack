@@ -3,6 +3,7 @@ spring:
     secret: ${JWT_SECRET}
 
   datasource:
+    database-platform: org.hibernate.dialect.MariaDBDialect
     driver-class-name: ${DATASOURCE_DRIVER_CLASS_NAME}
     url: ${DATASOURCE_URL}
     username: ${DATASOURCE_USERNAME}
