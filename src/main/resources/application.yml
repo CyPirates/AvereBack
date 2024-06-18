@@ -9,7 +9,6 @@ spring:
     password: ${DATASOURCE_PASSWORD}
 
   jpa:
-    database-platform: org.hibernate.dialect.MariaDBDialect
     open-in-view: false
     hibernate:
       ddl-auto: ${JPA_DDL_AUTO}
