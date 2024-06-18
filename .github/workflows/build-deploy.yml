@@ -27,14 +27,18 @@ jobs:
         distribution: 'temurin'
 
     - name: Set environments
-      run: |
-        echo "spring.datasource.driver-class-name=${{ secrets.DATASOURCE_DRIVER_CLASS_NAME }}" >> $GITHUB_ENV
-        echo "spring.datasource.url=${{ secrets.DATASOURCE_URL }}" >> $GITHUB_ENV
-        echo "spring.datasource.username=${{ secrets.DATASOURCE_USERNAME }}" >> $GITHUB_ENV
-        echo "spring.datasource.password=${{ secrets.DATASOURCE_PASSWORD }}" >> $GITHUB_ENV
-        echo "spring.jpa.hibernate.ddl-auto=${{ secrets.JPA_DDL_AUTO }}" >> $GITHUB_ENV
-        echo "spring.jwt.secret=${{ secrets.JWT_SECRET }}" >> $GITHUB_ENV
-        echo "server.port=${{ secrets.SERVER_PORT }}" >> $GITHUB_ENV
+      uses: microsoft/variable-substitution@v1
+      with:
+        files: ./src/main/resources/application.yml
+      env:
+        spring.datasource.driver-class-name: ${{ secrets.DATASOURCE_DRIVER_CLASS_NAME }}
+        spring.datasource.url: ${{ secrets.DATASOURCE_URL }}
+        spring.datasource.username: ${{ secrets.DATASOURCE_USERNAME }}
+        spring.datasource.password: ${{ secrets.DATASOURCE_PASSWORD }}
+
+        spring.jpa.hibernate.ddl-auto: ${{ secrets.JPA_DDL_AUTO }}
+        spring.jwt.secret: ${{ secrets.JWT_SECRET }}
+        server.port: ${{ secrets.SERVER_PORT }}
 
     # Configure Gradle for optimal use in GiHub Actions, including caching of downloaded dependencies.
     # See: https://github.com/gradle/actions/blob/main/setup-gradle/README.md
