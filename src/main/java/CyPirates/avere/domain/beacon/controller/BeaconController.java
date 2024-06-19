@@ -6,10 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j(topic = "BeaconController")
@@ -18,8 +15,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class BeaconController {
     private final BeaconService beaconService;
     @Operation(summary = "비콘 프로그램 조회하기", tags = {"비콘"})
-    @GetMapping("/{beaconId}")
-    public ResponseEntity<BeaconDto.Response> getBeaconProgram(@PathVariable String beaconId) {
-        return ResponseEntity.ok(beaconService.getBeaconProgram(beaconId));
+    @GetMapping("/{beaconUuid}")
+    public ResponseEntity<BeaconDto.Response> getBeaconProgram(@PathVariable String beaconUuid) {
+        return ResponseEntity.ok(beaconService.getBeaconProgram(beaconUuid));
     }
+
+    @Operation(summary = "비콘 프로그램 등록하기", tags = {"비콘"})
+    @GetMapping("/register/{beaconUuid}")
+    public ResponseEntity<BeaconDto.Response> registerBeaconProgram(@PathVariable String beaconUuid, @RequestParam("programId") Long programId) {
+        return ResponseEntity.ok(beaconService.registerBeaconProgram(beaconUuid, programId));
+    }
+
 }
