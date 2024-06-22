@@ -38,4 +38,18 @@ public class ProgramDto {
         @Schema(name = "프로그램 설명", example = "프로그램 설명")
         private String programDescription;
     }
+
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Schema(name = "Program Update Dto", description = "프로그램 수정")
+    public static class Update {
+        @NotBlank
+        @Schema(name = "프로그램 이름", example = "2024 XX 박람회")
+        private String programName;
+        @Schema(name = "프로그램 설명", example = "프로그램 설명")
+        private String programDescription;
+    }
 }
