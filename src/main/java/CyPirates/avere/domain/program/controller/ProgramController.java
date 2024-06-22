@@ -26,4 +26,10 @@ public class ProgramController {
      public ResponseEntity<ProgramDto.Response> registerProgram(@RequestBody ProgramDto.Register request) {
           return ResponseEntity.ok(programService.registerProgram(request));
      }
+
+     @Operation(summary = "프로그램 수정하기", tags = {"프로그램"})
+     @PutMapping("/{programId}")
+     public ResponseEntity<ProgramDto.Response> updateProgram(@PathVariable Long programId, @RequestBody ProgramDto.Update request) {
+          return ResponseEntity.ok(programService.updateProgram(programId, request));
+     }
 }

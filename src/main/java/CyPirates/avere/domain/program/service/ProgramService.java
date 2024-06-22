@@ -42,4 +42,20 @@ public class ProgramService {
                 .build();
     }
 
+    public ProgramDto.Response updateProgram(Long programId, ProgramDto.Update request){
+        ProgramEntity programEntity = programRepository.findById(programId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 프로그램이 존재하지 않습니다."));
+
+        programEntity.setProgramName(request.getProgramName());
+        programEntity.setProgramDescription(request.getProgramDescription());
+
+        ProgramEntity updatedProgramEntity = programRepository.save(programEntity);
+
+        return ProgramDto.Response.builder()
+                .programId(updatedProgramEntity.getId())
+                .programName(updatedProgramEntity.getProgramName())
+                .programDescription(updatedProgramEntity.getProgramDescription())
+                .build();
+    }
+
 }
