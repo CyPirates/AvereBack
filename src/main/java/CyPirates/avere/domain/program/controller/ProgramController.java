@@ -32,4 +32,11 @@ public class ProgramController {
      public ResponseEntity<ProgramDto.Response> updateProgram(@PathVariable Long programId, @RequestBody ProgramDto.Update request) {
           return ResponseEntity.ok(programService.updateProgram(programId, request));
      }
+
+     @Operation(summary = "프로그램 삭제하기", tags = {"프로그램"})
+     @DeleteMapping("/{programId}")
+     public ResponseEntity<Void> deleteProgram(@PathVariable Long programId) {
+          programService.deleteProgram(programId);
+          return ResponseEntity.noContent().build();
+     }
 }
