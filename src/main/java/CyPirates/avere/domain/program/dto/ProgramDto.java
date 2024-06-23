@@ -18,8 +18,8 @@ public class ProgramDto {
         private String programName;
         @Schema(example = "프로그램 설명")
         private String programDescription;
-//        @Schema(name = "프로그램 이미지", example = "프로그램 이미지")
-//        private String programImage;
+        @Schema(example = "1")
+        private Long imageId;
     }
 
     @Getter
@@ -37,6 +37,8 @@ public class ProgramDto {
         private String programName;
         @Schema(example = "프로그램 설명")
         private String programDescription;
+        @Schema(example = "1")
+        private Long imageId;
     }
 
     @Getter
@@ -47,9 +49,11 @@ public class ProgramDto {
     @Schema(name = "Program Update Dto", description = "프로그램 수정")
     public static class Update {
         @NotBlank
-        @Schema(name = "프로그램 이름", example = "2024 XX 박람회")
+        @Schema(example = "2024 XX 박람회")
         private String programName;
-        @Schema(name = "프로그램 설명", example = "프로그램 설명")
+        @Schema(example = "프로그램 설명")
         private String programDescription;
+        @Schema(example = "1")
+        private Long imageId;
     }
 }

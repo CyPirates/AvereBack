@@ -2,6 +2,7 @@ package CyPirates.avere.domain.program.entity;
 
 import CyPirates.avere.domain.item.entity.ItemEntity;
 import CyPirates.avere.global.entity.BaseEntity;
+import CyPirates.avere.global.image.entity.ImageEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,4 +28,8 @@ public class ProgramEntity extends BaseEntity {
 
     @OneToMany(mappedBy = "program",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<ItemEntity> items;
+
+    @ManyToOne
+    @JoinColumn(name = "image_id")
+    private ImageEntity image;
 }

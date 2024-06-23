@@ -1,10 +1,11 @@
 package CyPirates.avere.domain.program.service;
 
-import CyPirates.avere.domain.item.entity.ItemEntity;
 import CyPirates.avere.domain.item.repository.ItemRepository;
 import CyPirates.avere.domain.program.dto.ProgramDto;
 import CyPirates.avere.domain.program.entity.ProgramEntity;
 import CyPirates.avere.domain.program.repository.ProgramRepository;
+import CyPirates.avere.global.image.entity.ImageEntity;
+import CyPirates.avere.global.image.repository.ImageRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,7 @@ public class ProgramService {
 
     private final ProgramRepository programRepository;
     private final ItemRepository itemRepository;
+    private final ImageRepository imageRepository;
 
     public ProgramDto.Response getProgram(Long programId) {
         ProgramEntity programEntity = programRepository.findById(programId)
@@ -27,13 +29,18 @@ public class ProgramService {
                 .programId(programEntity.getId())
                 .programName(programEntity.getProgramName())
                 .programDescription(programEntity.getProgramDescription())
+                .imageId(programEntity.getImage() != null ? programEntity.getImage().getId() : null)
                 .build();
     }
 
     public ProgramDto.Response registerProgram(ProgramDto.Register request) {
+        ImageEntity imageEntity = imageRepository.findById(request.getImageId())
+                .orElse(null);
+
         ProgramEntity programEntity = ProgramEntity.builder()
                 .programName(request.getProgramName())
                 .programDescription(request.getProgramDescription())
+                .image(imageEntity)
                 .build();
 
         ProgramEntity savedProgramEntity = programRepository.save(programEntity);
@@ -42,6 +49,7 @@ public class ProgramService {
                 .programId(savedProgramEntity.getId())
                 .programName(savedProgramEntity.getProgramName())
                 .programDescription(savedProgramEntity.getProgramDescription())
+                .imageId(savedProgramEntity.getImage() != null ? savedProgramEntity.getImage().getId() : null)
                 .build();
     }
 
@@ -49,15 +57,19 @@ public class ProgramService {
         ProgramEntity programEntity = programRepository.findById(programId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 프로그램이 존재하지 않습니다."));
 
+        ImageEntity imageEntity = imageRepository.findById(request.getImageId())
+                .orElse(null);
+
         programEntity.setProgramName(request.getProgramName());
         programEntity.setProgramDescription(request.getProgramDescription());
-
+        programEntity.setImage(imageEntity);
         ProgramEntity updatedProgramEntity = programRepository.save(programEntity);
 
         return ProgramDto.Response.builder()
                 .programId(updatedProgramEntity.getId())
                 .programName(updatedProgramEntity.getProgramName())
                 .programDescription(updatedProgramEntity.getProgramDescription())
+                .imageId(updatedProgramEntity.getImage() != null ? updatedProgramEntity.getImage().getId() : null)
                 .build();
     }
 
