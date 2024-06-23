@@ -5,6 +5,8 @@ import CyPirates.avere.domain.item.entity.ItemEntity;
 import CyPirates.avere.domain.item.repository.ItemRepository;
 import CyPirates.avere.domain.program.entity.ProgramEntity;
 import CyPirates.avere.domain.program.repository.ProgramRepository;
+import CyPirates.avere.global.image.entity.ImageEntity;
+import CyPirates.avere.global.image.repository.ImageRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,10 +23,14 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
     private final ProgramRepository programRepository;
+    private final ImageRepository imageRepository;
 
     public ItemDto.Response registerItem(Long programId, ItemDto.Register request) {
         ProgramEntity programEntity = programRepository.findById(programId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 프로그램이 존재하지 않습니다."));
+
+        ImageEntity imageEntity = imageRepository.findById(request.getImageId())
+                .orElse(null);
 
         ItemEntity itemEntity = ItemEntity.builder()
                 .itemName(request.getItemName())
@@ -32,6 +38,7 @@ public class ItemService {
                 .itemLocation(request.getItemLocation())
                 .itemTime(request.getItemTime())
                 .program(programEntity)
+                .image(imageEntity)
                 .build();
 
         ItemEntity savedItemEntity = itemRepository.save(itemEntity);
@@ -42,6 +49,7 @@ public class ItemService {
                 .itemDescription(savedItemEntity.getItemDescription())
                 .itemLocation(savedItemEntity.getItemLocation())
                 .itemTime(savedItemEntity.getItemTime())
+                .imageId(savedItemEntity.getImage() != null ? savedItemEntity.getImage().getId() : null)
                 .build();
     }
 
@@ -58,6 +66,7 @@ public class ItemService {
                         .itemDescription(item.getItemDescription())
                         .itemLocation(item.getItemLocation())
                         .itemTime(item.getItemTime())
+                        .imageId(item.getImage() != null ? item.getImage().getId() : null)
                         .build())
                 .collect(Collectors.toList());
     }
@@ -66,10 +75,14 @@ public class ItemService {
         ItemEntity itemEntity = itemRepository.findById(itemId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 아이템이 존재하지 않습니다."));
 
+        ImageEntity imageEntity = imageRepository.findById(request.getImageId())
+                .orElse(null);
+
         itemEntity.setItemName(request.getItemName());
         itemEntity.setItemDescription(request.getItemDescription());
         itemEntity.setItemLocation(request.getItemLocation());
         itemEntity.setItemTime(request.getItemTime());
+        itemEntity.setImage(imageEntity);
 
         ItemEntity updatedItemEntity = itemRepository.save(itemEntity);
 
@@ -79,6 +92,7 @@ public class ItemService {
                 .itemDescription(updatedItemEntity.getItemDescription())
                 .itemLocation(updatedItemEntity.getItemLocation())
                 .itemTime(updatedItemEntity.getItemTime())
+                .imageId(updatedItemEntity.getImage() != null ? updatedItemEntity.getImage().getId() : null)
                 .build();
     }
 

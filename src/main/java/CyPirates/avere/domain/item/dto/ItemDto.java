@@ -22,6 +22,8 @@ public class ItemDto {
         private String itemLocation;
         @Schema(name = "itemTime", example = "아이템 시간")
         private String itemTime;
+        @Schema(name ="imageId", example = "1")
+        private Long imageId;
     }
 
     @Getter
@@ -42,6 +44,8 @@ public class ItemDto {
         private String itemLocation;
         @Schema(name = "itemTime", example = "아이템 시간")
         private String itemTime;
+        @Schema(name = "imageId", example = "1")
+        private Long imageId;
     }
 
 }
