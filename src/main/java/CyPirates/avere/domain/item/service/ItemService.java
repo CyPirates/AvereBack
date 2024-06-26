@@ -7,11 +7,14 @@ import CyPirates.avere.domain.program.entity.ProgramEntity;
 import CyPirates.avere.domain.program.repository.ProgramRepository;
 import CyPirates.avere.global.image.entity.ImageEntity;
 import CyPirates.avere.global.image.repository.ImageRepository;
+import CyPirates.avere.global.image.service.ImageService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,14 +26,16 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
     private final ProgramRepository programRepository;
-    private final ImageRepository imageRepository;
+    private final ImageService imageService;
 
-    public ItemDto.Response registerItem(Long programId, ItemDto.Register request) {
+    public ItemDto.Response registerItem(Long programId, ItemDto.Register request, MultipartFile file) throws IOException {
         ProgramEntity programEntity = programRepository.findById(programId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 프로그램이 존재하지 않습니다."));
 
-        ImageEntity imageEntity = imageRepository.findById(request.getImageId())
-                .orElse(null);
+        ImageEntity imageEntity = null;
+        if (file != null && !file.isEmpty()){
+            imageEntity = imageService.storeImage(file);
+        }
 
         ItemEntity itemEntity = ItemEntity.builder()
                 .itemName(request.getItemName())
@@ -71,12 +76,15 @@ public class ItemService {
                 .collect(Collectors.toList());
     }
 
-    public ItemDto.Response updateItem(Long itemId, ItemDto.Register request) {
+    public ItemDto.Response updateItem(Long itemId, ItemDto.Register request ,MultipartFile file) throws IOException {
         ItemEntity itemEntity = itemRepository.findById(itemId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 아이템이 존재하지 않습니다."));
 
-        ImageEntity imageEntity = imageRepository.findById(request.getImageId())
-                .orElse(null);
+        ImageEntity imageEntity = null;
+        if (file != null && !file.isEmpty()){
+            imageEntity = imageService.storeImage(file);
+        }
+
 
         itemEntity.setItemName(request.getItemName());
         itemEntity.setItemDescription(request.getItemDescription());

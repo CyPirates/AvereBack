@@ -18,8 +18,6 @@ public class ProgramDto {
         private String programName;
         @Schema(example = "프로그램 설명")
         private String programDescription;
-        @Schema(example = "1")
-        private Long imageId;
     }
 
     @Getter
@@ -53,7 +51,5 @@ public class ProgramDto {
         private String programName;
         @Schema(example = "프로그램 설명")
         private String programDescription;
-        @Schema(example = "1")
-        private Long imageId;
     }
 }

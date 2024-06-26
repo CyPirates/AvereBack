@@ -22,8 +22,7 @@ public class ItemDto {
         private String itemLocation;
         @Schema(name = "itemTime", example = "아이템 시간")
         private String itemTime;
-        @Schema(name ="imageId", example = "1")
-        private Long imageId;
+        // imageId를 선택적으로 사용할 수 있도록 설정
     }
 
     @Getter

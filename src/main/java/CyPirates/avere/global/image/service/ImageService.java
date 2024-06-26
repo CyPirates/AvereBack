@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +20,8 @@ public class ImageService {
     private final String uploadDir = "uploads/";
 
     public ImageEntity storeImage(MultipartFile file) throws IOException {
-        String fileName = file.getOriginalFilename();
+        String fileExtension = getFileExtension(file.getOriginalFilename());
+        String fileName = UUID.randomUUID().toString() + (fileExtension.isEmpty() ? "" : "." + fileExtension);
         Path filePath = Paths.get(uploadDir + fileName);
 
         Files.createDirectories(filePath.getParent());
@@ -47,5 +49,12 @@ public class ImageService {
             e.printStackTrace();
         }
         imageRepository.delete(image);
+    }
+    private String getFileExtension(String fileName) {
+        if (fileName == null || fileName.isEmpty()) {
+            return "";
+        }
+        int dotIndex = fileName.lastIndexOf('.');
+        return (dotIndex == -1) ? "" : fileName.substring(dotIndex + 1);
     }
 }
