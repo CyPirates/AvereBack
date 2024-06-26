@@ -5,8 +5,10 @@ import CyPirates.avere.domain.program.service.ProgramService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @Slf4j(topic = "ProgramController")
@@ -22,15 +24,27 @@ public class ProgramController {
      }
 
      @Operation(summary = "프로그램 등록하기", tags = {"프로그램"})
-     @PostMapping("/register")
-     public ResponseEntity<ProgramDto.Response> registerProgram(@RequestBody ProgramDto.Register request) {
-          return ResponseEntity.ok(programService.registerProgram(request));
+     @PostMapping(value = "/register",consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+     public ResponseEntity<ProgramDto.Response> registerProgram(@RequestPart ProgramDto.Register request,
+                                                                 @RequestPart MultipartFile file){
+          try{
+               return ResponseEntity.ok(programService.registerProgram(request, file));
+          } catch (Exception e) {
+               e.printStackTrace();
+               return ResponseEntity.status(500).build();
+          }
      }
 
      @Operation(summary = "프로그램 수정하기", tags = {"프로그램"})
-     @PutMapping("/{programId}")
-     public ResponseEntity<ProgramDto.Response> updateProgram(@PathVariable Long programId, @RequestBody ProgramDto.Update request) {
-          return ResponseEntity.ok(programService.updateProgram(programId, request));
+     @PutMapping(value = "/{programId}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+     public ResponseEntity<ProgramDto.Response> updateProgram(@PathVariable Long programId, @RequestPart ProgramDto.Update request,
+                                                              @RequestPart MultipartFile file){
+          try{
+                return ResponseEntity.ok(programService.updateProgram(programId, request, file));
+             } catch (Exception e) {
+                e.printStackTrace();
+                return ResponseEntity.status(500).build();
+          }
      }
 
      @Operation(summary = "프로그램 삭제하기", tags = {"프로그램"})
