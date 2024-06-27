@@ -5,7 +5,6 @@ import CyPirates.avere.domain.program.dto.ProgramDto;
 import CyPirates.avere.domain.program.entity.ProgramEntity;
 import CyPirates.avere.domain.program.repository.ProgramRepository;
 import CyPirates.avere.global.image.entity.ImageEntity;
-import CyPirates.avere.global.image.repository.ImageRepository;
 import CyPirates.avere.global.image.service.ImageService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -37,8 +36,8 @@ public class ProgramService {
                 .build();
     }
 
-    public ProgramDto.Response registerProgram(ProgramDto.Register request, MultipartFile file) throws IOException {
-        ImageEntity imageEntity = imageService.storeImage(file);
+    public ProgramDto.Response registerProgram(ProgramDto.Register request) throws IOException {
+        ImageEntity imageEntity = imageService.storeImage(request.getImage());
 
         ProgramEntity programEntity = ProgramEntity.builder()
                 .programName(request.getProgramName())

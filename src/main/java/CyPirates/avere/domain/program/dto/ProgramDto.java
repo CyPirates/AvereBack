@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 public class ProgramDto {
     @Getter
@@ -18,6 +19,9 @@ public class ProgramDto {
         private String programName;
         @Schema(example = "프로그램 설명")
         private String programDescription;
+        @NotNull
+        @Schema(name = "image", description = "플레이리스트 이미지입니다.", type = "string", format = "binary")
+        private MultipartFile image;
     }
 
     @Getter
