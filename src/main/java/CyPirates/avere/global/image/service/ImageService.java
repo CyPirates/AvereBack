@@ -45,7 +45,9 @@ public class ImageService {
         String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
         return baseUrl + "/images/" + image.getFileName();
     }
-
+    public String getUploadDir() {
+        return uploadDir;
+    }
     public void deleteImage(Long id) {
         ImageEntity image = getImage(id);
         try {
