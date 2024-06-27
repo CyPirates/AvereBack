@@ -36,10 +36,9 @@ public class ProgramController {
 
      @Operation(summary = "프로그램 수정하기", tags = {"프로그램"})
      @PutMapping(value = "/{programId}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-     public ResponseEntity<ProgramDto.Response> updateProgram(@PathVariable Long programId, @RequestPart ProgramDto.Update request,
-                                                              @RequestPart MultipartFile file){
+     public ResponseEntity<ProgramDto.Response> updateProgram(@PathVariable Long programId,@ModelAttribute ProgramDto.Update request) {
           try{
-                return ResponseEntity.ok(programService.updateProgram(programId, request, file));
+                return ResponseEntity.ok(programService.updateProgram(programId, request));
              } catch (Exception e) {
                 e.printStackTrace();
                 return ResponseEntity.status(500).build();

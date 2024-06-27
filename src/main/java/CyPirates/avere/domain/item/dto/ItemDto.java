@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 public class ItemDto {
     @Getter
@@ -22,7 +23,9 @@ public class ItemDto {
         private String itemLocation;
         @Schema(name = "itemTime", example = "아이템 시간")
         private String itemTime;
-        // imageId를 선택적으로 사용할 수 있도록 설정
+        @NotNull
+        @Schema(name = "image", description = "플레이리스트 이미지입니다.", type = "string", format = "binary")
+        private MultipartFile image;
     }
 
     @Getter
@@ -43,8 +46,7 @@ public class ItemDto {
         private String itemLocation;
         @Schema(name = "itemTime", example = "아이템 시간")
         private String itemTime;
-        @Schema(name = "imageId", example = "1")
-        private Long imageId;
-    }
+        @Schema(name = "imageUrl", example = "http://localhost:8080/images/1.jpg")
+        private String imageUrl;    }
 
 }

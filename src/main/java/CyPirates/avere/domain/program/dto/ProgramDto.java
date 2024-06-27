@@ -39,8 +39,8 @@ public class ProgramDto {
         private String programName;
         @Schema(example = "프로그램 설명")
         private String programDescription;
-        @Schema(example = "1")
-        private Long imageId;
+        @Schema(name = "imageUrl", example = "http://localhost:8080/images/1.jpg")
+        private String imageUrl;
     }
 
     @Getter
@@ -55,5 +55,8 @@ public class ProgramDto {
         private String programName;
         @Schema(example = "프로그램 설명")
         private String programDescription;
+        @NotNull
+        @Schema(name = "image", description = "플레이리스트 이미지입니다.", type = "string", format = "binary")
+        private MultipartFile image;
     }
 }
