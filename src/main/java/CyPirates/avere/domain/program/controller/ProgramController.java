@@ -25,10 +25,9 @@ public class ProgramController {
 
      @Operation(summary = "프로그램 등록하기", tags = {"프로그램"})
      @PostMapping(value = "/register",consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-     public ResponseEntity<ProgramDto.Response> registerProgram(@RequestPart ProgramDto.Register request,
-                                                                 @RequestPart MultipartFile file){
+     public ResponseEntity<ProgramDto.Response> registerProgram(@ModelAttribute ProgramDto.Register request){
           try{
-               return ResponseEntity.ok(programService.registerProgram(request, file));
+               return ResponseEntity.ok(programService.registerProgram(request));
           } catch (Exception e) {
                e.printStackTrace();
                return ResponseEntity.status(500).build();
