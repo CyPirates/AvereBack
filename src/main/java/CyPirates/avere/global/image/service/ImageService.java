@@ -5,7 +5,7 @@ import CyPirates.avere.global.image.repository.ImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -39,6 +39,11 @@ public class ImageService {
 
     public ImageEntity getImage(Long id) {
         return imageRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("이미지를 찾을 수 없습니다."));
+    }
+    public String getImageUrl(Long id) {
+        ImageEntity image = getImage(id);
+        String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
+        return baseUrl + "/images/" + image.getFileName();
     }
 
     public void deleteImage(Long id) {

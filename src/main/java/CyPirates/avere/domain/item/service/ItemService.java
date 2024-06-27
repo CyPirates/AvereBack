@@ -28,14 +28,11 @@ public class ItemService {
     private final ProgramRepository programRepository;
     private final ImageService imageService;
 
-    public ItemDto.Response registerItem(Long programId, ItemDto.Register request, MultipartFile file) throws IOException {
+    public ItemDto.Response registerItem(Long programId, ItemDto.Register request) throws IOException {
         ProgramEntity programEntity = programRepository.findById(programId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 프로그램이 존재하지 않습니다."));
 
-        ImageEntity imageEntity = null;
-        if (file != null && !file.isEmpty()){
-            imageEntity = imageService.storeImage(file);
-        }
+        ImageEntity imageEntity = imageService.storeImage(request.getImage());
 
         ItemEntity itemEntity = ItemEntity.builder()
                 .itemName(request.getItemName())
@@ -54,7 +51,7 @@ public class ItemService {
                 .itemDescription(savedItemEntity.getItemDescription())
                 .itemLocation(savedItemEntity.getItemLocation())
                 .itemTime(savedItemEntity.getItemTime())
-                .imageId(savedItemEntity.getImage() != null ? savedItemEntity.getImage().getId() : null)
+                .imageUrl(imageService.getImageUrl(savedItemEntity.getImage().getId()))
                 .build();
     }
 
@@ -71,20 +68,16 @@ public class ItemService {
                         .itemDescription(item.getItemDescription())
                         .itemLocation(item.getItemLocation())
                         .itemTime(item.getItemTime())
-                        .imageId(item.getImage() != null ? item.getImage().getId() : null)
+                        .imageUrl(imageService.getImageUrl(item.getImage().getId()))
                         .build())
                 .collect(Collectors.toList());
     }
 
-    public ItemDto.Response updateItem(Long itemId, ItemDto.Register request ,MultipartFile file) throws IOException {
+    public ItemDto.Response updateItem(Long itemId, ItemDto.Register request) throws IOException {
         ItemEntity itemEntity = itemRepository.findById(itemId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 아이템이 존재하지 않습니다."));
 
-        ImageEntity imageEntity = null;
-        if (file != null && !file.isEmpty()){
-            imageEntity = imageService.storeImage(file);
-        }
-
+        ImageEntity imageEntity = imageService.storeImage(request.getImage());
 
         itemEntity.setItemName(request.getItemName());
         itemEntity.setItemDescription(request.getItemDescription());
@@ -100,7 +93,7 @@ public class ItemService {
                 .itemDescription(updatedItemEntity.getItemDescription())
                 .itemLocation(updatedItemEntity.getItemLocation())
                 .itemTime(updatedItemEntity.getItemTime())
-                .imageId(updatedItemEntity.getImage() != null ? updatedItemEntity.getImage().getId() : null)
+                .imageUrl(imageService.getImageUrl(updatedItemEntity.getImage().getId()))
                 .build();
     }
 

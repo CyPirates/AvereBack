@@ -23,10 +23,9 @@ public class ItemController {
 
     @Operation(summary = "아이템 등록하기", tags = {"아이템"})
     @PostMapping(value ="/register/{programId}" ,consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ItemDto.Response> registerItem(@PathVariable Long programId, @RequestPart ItemDto.Register request,
-                                                         @RequestPart MultipartFile file) {
+    public ResponseEntity<ItemDto.Response> registerItem(@PathVariable Long programId, @ModelAttribute ItemDto.Register request) {
         try {
-            return ResponseEntity.ok(itemService.registerItem(programId, request, file));
+            return ResponseEntity.ok(itemService.registerItem(programId, request));
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(500).build();
@@ -41,10 +40,9 @@ public class ItemController {
 
     @Operation(summary = "아이템 수정하기", tags = {"아이템"})
     @PutMapping(value = "/{itemId}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ItemDto.Response> updateItem(@PathVariable Long itemId, @RequestPart ItemDto.Register request,
-                                                       @RequestPart MultipartFile file) {
+    public ResponseEntity<ItemDto.Response> updateItem(@PathVariable Long itemId, @ModelAttribute ItemDto.Register request) {
         try{
-            return ResponseEntity.ok(itemService.updateItem(itemId, request, file));
+            return ResponseEntity.ok(itemService.updateItem(itemId, request));
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(500).build();

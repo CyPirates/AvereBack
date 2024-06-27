@@ -32,7 +32,7 @@ public class ProgramService {
                 .programId(programEntity.getId())
                 .programName(programEntity.getProgramName())
                 .programDescription(programEntity.getProgramDescription())
-                .imageId(programEntity.getImage() != null ? programEntity.getImage().getId() : null)
+                .imageUrl(programEntity.getImage() != null ? imageService.getImageUrl(programEntity.getImage().getId()) : null)
                 .build();
     }
 
@@ -51,15 +51,15 @@ public class ProgramService {
                 .programId(savedProgramEntity.getId())
                 .programName(savedProgramEntity.getProgramName())
                 .programDescription(savedProgramEntity.getProgramDescription())
-                .imageId(savedProgramEntity.getImage() != null ? savedProgramEntity.getImage().getId() : null)
+                .imageUrl(imageService.getImageUrl(savedProgramEntity.getImage().getId()))
                 .build();
     }
 
-    public ProgramDto.Response updateProgram(Long programId, ProgramDto.Update request, MultipartFile file) throws IOException {
+    public ProgramDto.Response updateProgram(Long programId, ProgramDto.Update request) throws IOException {
         ProgramEntity programEntity = programRepository.findById(programId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 프로그램이 존재하지 않습니다."));
 
-        ImageEntity imageEntity = imageService.storeImage(file);
+        ImageEntity imageEntity = imageService.storeImage(request.getImage());
 
         programEntity.setProgramName(request.getProgramName());
         programEntity.setProgramDescription(request.getProgramDescription());
@@ -70,7 +70,7 @@ public class ProgramService {
                 .programId(updatedProgramEntity.getId())
                 .programName(updatedProgramEntity.getProgramName())
                 .programDescription(updatedProgramEntity.getProgramDescription())
-                .imageId(updatedProgramEntity.getImage() != null ? updatedProgramEntity.getImage().getId() : null)
+                .imageUrl(imageService.getImageUrl(updatedProgramEntity.getImage().getId()))
                 .build();
     }
 

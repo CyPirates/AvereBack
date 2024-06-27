@@ -1,7 +1,6 @@
 spring:
   jwt:
     secret: ${JWT_SECRET}
-
   datasource:
     driver-class-name: ${DATASOURCE_DRIVER_CLASS_NAME}
     url: ${DATASOURCE_URL}
