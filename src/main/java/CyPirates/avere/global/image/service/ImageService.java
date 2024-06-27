@@ -42,7 +42,10 @@ public class ImageService {
     }
     public String getImageUrl(Long id) {
         ImageEntity image = getImage(id);
-        String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
+        String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .scheme(getScheme())
+                .build()
+                .toUriString();
         return baseUrl + "/images/" + image.getFileName();
     }
     public String getUploadDir() {
@@ -64,4 +67,9 @@ public class ImageService {
         int dotIndex = fileName.lastIndexOf('.');
         return (dotIndex == -1) ? "" : fileName.substring(dotIndex + 1);
     }
+
+    private String getScheme() {
+        return ServletUriComponentsBuilder.fromCurrentRequestUri().build().getScheme();
+    }
+
 }
