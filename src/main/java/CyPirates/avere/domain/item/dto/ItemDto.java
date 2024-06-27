@@ -47,6 +47,7 @@ public class ItemDto {
         @Schema(name = "itemTime", example = "아이템 시간")
         private String itemTime;
         @Schema(name = "imageUrl", example = "http://localhost:8080/images/1.jpg")
-        private String imageUrl;    }
+        private String imageUrl;
+    }
 
 }
