@@ -9,4 +9,6 @@ import java.util.List;
 public interface ItemRepository extends JpaRepository<ItemEntity, Long> {
 
     List<ItemEntity> findByProgram(ProgramEntity program);
+
+    List<ItemEntity> findByUserUsername(String username);
 }
