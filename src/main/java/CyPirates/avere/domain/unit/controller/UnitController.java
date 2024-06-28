@@ -1,6 +1,7 @@
 package CyPirates.avere.domain.unit.controller;
 
 import CyPirates.avere.domain.item.dto.ItemDto;
+import CyPirates.avere.domain.program.dto.ProgramDto;
 import CyPirates.avere.domain.unit.dto.UnitDto;
 import CyPirates.avere.domain.unit.service.UnitService;
 import CyPirates.avere.global.jwt.CustomUserDetails;
@@ -20,6 +21,12 @@ import java.util.List;
 public class UnitController {
     private final UnitService unitService;
 
+    @Operation(summary = "로그인한 유저가 등록한 유닛 조회하기", tags = {"유닛"})
+    @GetMapping("/my-units")
+    public ResponseEntity<List<UnitDto.UnitInfoResponse>> getUnitsByUser(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        List<UnitDto.UnitInfoResponse> units = unitService.getUnitsByUser(userDetails.getUsername());
+        return ResponseEntity.ok(units);
+    }
     @Operation(summary = "프로그램 ID로 유닛 목록 조회하기", tags = {"유닛"})
     @GetMapping("/program/{programId}")
     public ResponseEntity<List<UnitDto.UnitInfoResponse>> getUnitsByProgramId(@PathVariable Long programId) {
