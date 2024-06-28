@@ -5,6 +5,8 @@ import CyPirates.avere.domain.item.entity.ItemEntity;
 import CyPirates.avere.domain.item.repository.ItemRepository;
 import CyPirates.avere.domain.program.entity.ProgramEntity;
 import CyPirates.avere.domain.program.repository.ProgramRepository;
+import CyPirates.avere.domain.unit.entity.UnitEntity;
+import CyPirates.avere.domain.unit.repository.UnitRepository;
 import CyPirates.avere.domain.user.repository.UserRepository;
 import CyPirates.avere.global.image.entity.ImageEntity;
 import CyPirates.avere.global.image.repository.ImageRepository;
@@ -26,13 +28,14 @@ import java.util.stream.Collectors;
 public class ItemService {
 
     private final ItemRepository itemRepository;
-    private final ProgramRepository programRepository;
+    private final UnitRepository unitRepository;
     private final ImageService imageService;
     private final UserRepository userRepository;
 
-    public ItemDto.Response registerItem(Long programId, ItemDto.Register request,String username) throws IOException {
-        ProgramEntity programEntity = programRepository.findById(programId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 프로그램이 존재하지 않습니다."));
+    public ItemDto.Response registerItem(Long unitId, ItemDto.Register request,String username) throws IOException {
+        UnitEntity unitEntity = unitRepository.findById(unitId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유닛이 존재하지 않습니다."));
+
 
         ImageEntity imageEntity = imageService.storeImage(request.getImage());
 
@@ -41,7 +44,7 @@ public class ItemService {
                 .itemDescription(request.getItemDescription())
                 .itemLocation(request.getItemLocation())
                 .itemTime(request.getItemTime())
-                .program(programEntity)
+                .unit(unitEntity)
                 .user(userRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다.")))
                 .image(imageEntity)
                 .build();
@@ -60,10 +63,10 @@ public class ItemService {
     }
 
     public List<ItemDto.Response> getItemsByProgramId(Long programId) {
-        ProgramEntity programEntity = programRepository.findById(programId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 프로그램이 존재하지 않습니다."));
+        UnitEntity unitEntity = unitRepository.findById(programId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유닛이 존재하지 않습니다."));
 
-        List<ItemEntity> items = itemRepository.findByProgram(programEntity);
+        List<ItemEntity> items = itemRepository.findByUnit(unitEntity);
 
         return items.stream()
                 .map(item -> ItemDto.Response.builder()
@@ -72,6 +75,7 @@ public class ItemService {
                         .itemDescription(item.getItemDescription())
                         .itemLocation(item.getItemLocation())
                         .itemTime(item.getItemTime())
+                        .userId(item.getUser().getId())
                         .imageUrl(imageService.getImageUrl(item.getImage().getId()))
                         .build())
                 .collect(Collectors.toList());

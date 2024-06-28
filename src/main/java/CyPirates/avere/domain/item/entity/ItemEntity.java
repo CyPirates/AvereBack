@@ -1,6 +1,7 @@
 package CyPirates.avere.domain.item.entity;
 
 import CyPirates.avere.domain.program.entity.ProgramEntity;
+import CyPirates.avere.domain.unit.entity.UnitEntity;
 import CyPirates.avere.domain.user.entity.User;
 import CyPirates.avere.global.entity.BaseEntity;
 import CyPirates.avere.global.image.entity.ImageEntity;
@@ -32,8 +33,8 @@ public class ItemEntity extends BaseEntity {
     private String itemTime;
 
     @ManyToOne
-    @JoinColumn(name = "program_id", nullable = false)
-    private ProgramEntity program;
+    @JoinColumn(name = "unit_id")
+    private UnitEntity unit;
 
     @ManyToOne
     @JoinColumn(name = "image_id")

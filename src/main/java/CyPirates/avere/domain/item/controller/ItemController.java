@@ -24,21 +24,21 @@ public class ItemController {
     private final ItemService itemService;
 
     @Operation(summary = "아이템 등록하기", tags = {"아이템"})
-    @PostMapping(value ="/register/{programId}" ,consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ItemDto.Response> registerItem(@PathVariable Long programId, @ModelAttribute ItemDto.Register request,
+    @PostMapping(value ="/register/{unitId}" ,consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ItemDto.Response> registerItem(@PathVariable Long unitId, @ModelAttribute ItemDto.Register request,
                                                          @AuthenticationPrincipal CustomUserDetails userDetails) {
         try {
-            return ResponseEntity.ok(itemService.registerItem(programId, request,userDetails.getUsername()));
+            return ResponseEntity.ok(itemService.registerItem(unitId, request,userDetails.getUsername()));
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(500).build();
         }
     }
 
-    @Operation(summary = "프로그램 ID로 아이템 목록 조회하기", tags = {"아이템"})
-    @GetMapping("/{programId}")
-    public ResponseEntity<List<ItemDto.Response>> getItemsByProgramId(@PathVariable Long programId) {
-        return ResponseEntity.ok(itemService.getItemsByProgramId(programId));
+    @Operation(summary = "유닛 ID로 아이템 목록 조회하기", tags = {"아이템"})
+    @GetMapping("/{unitId}")
+    public ResponseEntity<List<ItemDto.Response>> getItemsByProgramId(@PathVariable Long unitId) {
+        return ResponseEntity.ok(itemService.getItemsByProgramId(unitId));
     }
 
     @Operation(summary = "아이템 수정하기", tags = {"아이템"})
