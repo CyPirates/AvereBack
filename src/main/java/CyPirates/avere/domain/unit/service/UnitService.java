@@ -2,6 +2,7 @@ package CyPirates.avere.domain.unit.service;
 
 import CyPirates.avere.domain.item.dto.ItemDto;
 import CyPirates.avere.domain.item.entity.ItemEntity;
+import CyPirates.avere.domain.program.dto.ProgramDto;
 import CyPirates.avere.domain.program.entity.ProgramEntity;
 import CyPirates.avere.domain.program.repository.ProgramRepository;
 import CyPirates.avere.domain.unit.dto.UnitDto;
@@ -34,6 +35,18 @@ public class UnitService {
     private final ProgramRepository programRepository;
 
 
+    public List<UnitDto.UnitInfoResponse> getUnitsByUser(String username) {
+        List<UnitEntity> units = unitRepository.findByHostUsername(username);
+
+        return units.stream().map(unitEntity -> UnitDto.UnitInfoResponse.builder()
+                .unitId(unitEntity.getId())
+                .unitName(unitEntity.getName())
+                .unitDescription(unitEntity.getDescription())
+                .startTime(unitEntity.getStartTime())
+                .endTime(unitEntity.getEndTime())
+                .location(unitEntity.getLocation())
+                .build()).collect(Collectors.toList());
+    }
     public List<UnitDto.UnitInfoResponse> getUnitsByProgramId(Long programId) {
         ProgramEntity programEntity = programRepository.findById(programId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 프로그램이 존재하지 않습니다."));

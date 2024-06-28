@@ -12,4 +12,6 @@ import java.util.List;
 public interface UnitRepository extends JpaRepository<UnitEntity, Long> {
 
     List<UnitEntity> findByProgram(ProgramEntity programEntity);
+
+    List<UnitEntity> findByHostUsername(String username);
 }
