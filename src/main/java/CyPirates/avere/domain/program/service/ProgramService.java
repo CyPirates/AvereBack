@@ -91,7 +91,7 @@ public class ProgramService {
         if(!programEntity.getUser().getUsername().equals(username)){
             throw new IllegalArgumentException("해당 프로그램에 대한 권한이 없습니다.");
         }
-        // 먼저 해당 프로그램에 속한 모든 아이템을 삭제
+        // 먼저 해당 프로그램에 속한 모든 유닛을 삭제
         unitRepository.deleteAll(programEntity.getUnits());
 
         // 그런 다음 프로그램을 삭제

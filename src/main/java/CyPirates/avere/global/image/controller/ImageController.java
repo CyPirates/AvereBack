@@ -31,6 +31,8 @@ public class ImageController {
             Resource resource = new UrlResource(filePath.toUri());
 
             if (resource.exists() && resource.isReadable()) {
+                HttpHeaders headers = new HttpHeaders();
+                headers.add(HttpHeaders.CACHE_CONTROL,"max-age=3600,must-revalidate,no-transform");
                 return ResponseEntity.ok()
                         .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
                         .header(HttpHeaders.CONTENT_TYPE, "image/jpeg")  // 이미지 타입을 적절히 설정
