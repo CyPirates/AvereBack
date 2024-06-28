@@ -23,6 +23,7 @@ public class ItemDto {
         private String itemLocation;
         @Schema(name = "itemTime", example = "아이템 시간")
         private String itemTime;
+        @NotNull
         @Schema(name = "image", description = "플레이리스트 이미지입니다.", type = "string", format = "binary")
         private MultipartFile image;
     }
