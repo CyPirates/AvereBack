@@ -60,6 +60,12 @@ public class UnitController {
         return ResponseEntity.ok(unitService.getReservationInfo(unitId, userDetails.getUsername()));
     }
 
+    @Operation(summary = "내 예약정보 조회하기", tags = {"유닛"})
+    @GetMapping("/reservation")
+    public ResponseEntity<List<UnitDto.ReservationInfoResponse>> getMyReservationInfo(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        return ResponseEntity.ok(unitService.getMyReservationInfo(userDetails.getUsername()));
+    }
+
     @Operation(summary = "예약하기", tags = {"유닛"})
     @PostMapping("/{unitId}/reservation")
     public ResponseEntity<UnitDto.ReservationInfoResponse> registerReservation(@PathVariable Long unitId, @AuthenticationPrincipal CustomUserDetails userDetails) {

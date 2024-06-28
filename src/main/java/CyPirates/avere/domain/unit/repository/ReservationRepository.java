@@ -22,6 +22,8 @@ public interface ReservationRepository extends JpaRepository<ReservationEntity, 
 
     ReservationEntity findByUnitAndGuest(UnitEntity unit, User guest);
 
+    List<ReservationEntity> findAllByGuest(User guest);
+
     @Query("SELECT r FROM ReservationEntity r WHERE r.id = :reservationId and r.guest.username = :username")
     Optional<ReservationEntity> findByIdAndGuestUsername(Long reservationId, String username);
 }
