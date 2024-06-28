@@ -1,6 +1,7 @@
 package CyPirates.avere.domain.program.entity;
 
 import CyPirates.avere.domain.item.entity.ItemEntity;
+import CyPirates.avere.domain.user.entity.User;
 import CyPirates.avere.global.entity.BaseEntity;
 import CyPirates.avere.global.image.entity.ImageEntity;
 import jakarta.persistence.*;
@@ -32,4 +33,8 @@ public class ProgramEntity extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "image_id")
     private ImageEntity image;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

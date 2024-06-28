@@ -5,6 +5,7 @@ import CyPirates.avere.domain.item.entity.ItemEntity;
 import CyPirates.avere.domain.item.repository.ItemRepository;
 import CyPirates.avere.domain.program.entity.ProgramEntity;
 import CyPirates.avere.domain.program.repository.ProgramRepository;
+import CyPirates.avere.domain.user.repository.UserRepository;
 import CyPirates.avere.global.image.entity.ImageEntity;
 import CyPirates.avere.global.image.repository.ImageRepository;
 import CyPirates.avere.global.image.service.ImageService;
@@ -27,8 +28,9 @@ public class ItemService {
     private final ItemRepository itemRepository;
     private final ProgramRepository programRepository;
     private final ImageService imageService;
+    private final UserRepository userRepository;
 
-    public ItemDto.Response registerItem(Long programId, ItemDto.Register request) throws IOException {
+    public ItemDto.Response registerItem(Long programId, ItemDto.Register request,String username) throws IOException {
         ProgramEntity programEntity = programRepository.findById(programId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 프로그램이 존재하지 않습니다."));
 
@@ -40,6 +42,7 @@ public class ItemService {
                 .itemLocation(request.getItemLocation())
                 .itemTime(request.getItemTime())
                 .program(programEntity)
+                .user(userRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다.")))
                 .image(imageEntity)
                 .build();
 
@@ -52,6 +55,7 @@ public class ItemService {
                 .itemLocation(savedItemEntity.getItemLocation())
                 .itemTime(savedItemEntity.getItemTime())
                 .imageUrl(imageService.getImageUrl(savedItemEntity.getImage().getId()))
+                .userId(savedItemEntity.getUser().getId())
                 .build();
     }
 
@@ -73,9 +77,13 @@ public class ItemService {
                 .collect(Collectors.toList());
     }
 
-    public ItemDto.Response updateItem(Long itemId, ItemDto.Register request) throws IOException {
+    public ItemDto.Response updateItem(Long itemId, ItemDto.Register request,String username) throws IOException {
         ItemEntity itemEntity = itemRepository.findById(itemId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 아이템이 존재하지 않습니다."));
+
+        if(!itemEntity.getUser().getUsername().equals(username)){
+            throw new IllegalArgumentException("해당 아이템에 대한 권한이 없습니다.");
+        }
 
         ImageEntity imageEntity = imageService.storeImage(request.getImage());
 
@@ -94,13 +102,32 @@ public class ItemService {
                 .itemLocation(updatedItemEntity.getItemLocation())
                 .itemTime(updatedItemEntity.getItemTime())
                 .imageUrl(imageService.getImageUrl(updatedItemEntity.getImage().getId()))
+                .userId(updatedItemEntity.getUser().getId())
                 .build();
     }
 
-    public void deleteItem(Long itemId) {
+    public void deleteItem(Long itemId,String username) {
         ItemEntity itemEntity = itemRepository.findById(itemId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 아이템이 존재하지 않습니다."));
 
+        if(!itemEntity.getUser().getUsername().equals(username)){
+            throw new IllegalArgumentException("해당 아이템에 대한 권한이 없습니다.");
+        }
+
         itemRepository.delete(itemEntity);
+    }
+
+    public List<ItemDto.Response> getItemsByUser(String username) {
+        List<ItemEntity> items = itemRepository.findByUserUsername(username);
+
+        return items.stream().map(itemEntity -> ItemDto.Response.builder()
+                .itemId(itemEntity.getId())
+                .itemName(itemEntity.getItemName())
+                .itemDescription(itemEntity.getItemDescription())
+                .itemLocation(itemEntity.getItemLocation())
+                .itemTime(itemEntity.getItemTime())
+                .imageUrl(imageService.getImageUrl(itemEntity.getImage().getId()))
+                .userId(itemEntity.getUser().getId())
+                .build()).collect(Collectors.toList());
     }
 }

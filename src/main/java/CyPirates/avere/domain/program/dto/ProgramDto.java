@@ -41,6 +41,8 @@ public class ProgramDto {
         private String programDescription;
         @Schema(name = "imageUrl", example = "http://localhost:8080/images/1.jpg")
         private String imageUrl;
+        @Schema(name ="user_id",example = "1")
+        private Long userId;
     }
 
     @Getter
