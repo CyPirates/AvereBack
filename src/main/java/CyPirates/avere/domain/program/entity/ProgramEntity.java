@@ -1,6 +1,7 @@
 package CyPirates.avere.domain.program.entity;
 
 import CyPirates.avere.domain.item.entity.ItemEntity;
+import CyPirates.avere.domain.unit.entity.UnitEntity;
 import CyPirates.avere.domain.user.entity.User;
 import CyPirates.avere.global.entity.BaseEntity;
 import CyPirates.avere.global.image.entity.ImageEntity;
@@ -28,7 +29,7 @@ public class ProgramEntity extends BaseEntity {
     private String programDescription;
 
     @OneToMany(mappedBy = "program",cascade = CascadeType.ALL,orphanRemoval = true)
-    private List<ItemEntity> items;
+    private List<UnitEntity> units;
 
     @ManyToOne
     @JoinColumn(name = "image_id")

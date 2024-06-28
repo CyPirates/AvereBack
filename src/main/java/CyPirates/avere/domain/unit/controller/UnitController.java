@@ -1,5 +1,6 @@
 package CyPirates.avere.domain.unit.controller;
 
+import CyPirates.avere.domain.item.dto.ItemDto;
 import CyPirates.avere.domain.unit.dto.UnitDto;
 import CyPirates.avere.domain.unit.service.UnitService;
 import CyPirates.avere.global.jwt.CustomUserDetails;
@@ -10,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @Slf4j(topic = "UnitController")
 @RequiredArgsConstructor
@@ -17,6 +20,11 @@ import org.springframework.web.bind.annotation.*;
 public class UnitController {
     private final UnitService unitService;
 
+    @Operation(summary = "프로그램 ID로 유닛 목록 조회하기", tags = {"유닛"})
+    @GetMapping("/program/{programId}")
+    public ResponseEntity<List<UnitDto.UnitInfoResponse>> getUnitsByProgramId(@PathVariable Long programId) {
+        return ResponseEntity.ok(unitService.getUnitsByProgramId(programId));
+    }
     // 게스트 - 유닛
     @Operation(summary = "유닛 기본정보 조회하기", tags = {"유닛"})
     @GetMapping("/{unitId}")
