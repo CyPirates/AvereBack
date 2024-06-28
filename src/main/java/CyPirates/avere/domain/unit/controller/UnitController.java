@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @Slf4j(topic = "UnitController")
 @RequiredArgsConstructor
@@ -43,6 +45,12 @@ public class UnitController {
     @GetMapping("/{unitId}/reservation")
     public ResponseEntity<UnitDto.ReservationInfoResponse> getReservationInfo(@PathVariable Long unitId, @AuthenticationPrincipal CustomUserDetails userDetails) {
         return ResponseEntity.ok(unitService.getReservationInfo(unitId, userDetails.getUsername()));
+    }
+
+    @Operation(summary = "내 예약정보 조회하기", tags = {"유닛"})
+    @GetMapping("/reservation")
+    public ResponseEntity<List<UnitDto.ReservationInfoResponse>> getMyReservationInfo(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        return ResponseEntity.ok(unitService.getMyReservationInfo(userDetails.getUsername()));
     }
 
     @Operation(summary = "예약하기", tags = {"유닛"})

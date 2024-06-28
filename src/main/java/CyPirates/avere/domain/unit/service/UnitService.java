@@ -230,4 +230,24 @@ public class UnitService {
                 .reservationCount(reservationCount)
                 .build();
     }
+
+    public List<UnitDto.ReservationInfoResponse> getMyReservationInfo(String username) {
+        if (username == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그인이 필요합니다.");
+        }
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 유저입니다."));
+
+        List<ReservationEntity> reservation = reservationRepository.findAllByGuest(user);
+
+        return reservation.stream()
+                .map(reservationEntity -> UnitDto.ReservationInfoResponse.builder()
+                        .unitId(reservationEntity.getUnit().getId())
+                        .userId(reservationEntity.getGuest().getId())
+                        .reservationId(reservationEntity.getId())
+                        .waitingNumber(reservationRepository.countByUnitAndStatusAndIdLessThan(reservationEntity.getUnit(), ReservationEntity.Status.WAITING, reservationEntity.getId()))
+                        .build())
+                .collect(Collectors.toList());
+    }
 }
